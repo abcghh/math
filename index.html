@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12nd Meeting of the International Academy of Mathematical Chemistry</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        /* 侧边导航栏 */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 3px 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ecf0f1;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .nav-item {
+            margin-bottom: 12px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #bdc3c7;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #ecf0f1;
+            transform: translateX(5px);
+        }
+        
+        .nav-link.active {
+            background-color: #3498db;
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background-color: #e74c3c;
+        }
+        
+        /* 内容卡片 */
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+        
+        /* 演讲者和委员会列表 */
+        .speaker-list, .committee-list {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+        }
+        
+        .speaker-list tr, .committee-list tr {
+            height: 55px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        .speaker-list tr:hover, .committee-list tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .icon-cell {
+            padding: 15px 20px 15px 10px;
+            vertical-align: top;
+            width: 50px;
+        }
+        
+        .name-cell {
+            padding: 15px 0;
+            vertical-align: middle;
+            min-width: 300px;
+        }
+        
+        .info-col {
+            vertical-align: middle;
+            padding: 15px 20px;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .speaker-link, .committee-link {
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: inline-block;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .speaker-link:after, .committee-link:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3498db;
+            transition: width 0.3s ease;
+        }
+        
+        .speaker-link:hover, .committee-link:hover {
+            color: #3498db;
+        }
+        
+        .speaker-link:hover:after, .committee-link:hover:after {
+            width: 100%;
+        }
+        
+        .speaker-name.no-link {
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 8px 0;
+            display: inline-block;
+        }
+        
+        .icon {
+            width: 14px;
+            height: 14px;
+            margin-top: 10px;
+            color: #3498db;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .sub-section-title {
+            font-size: 1.4em;
+            color: #34495e;
+            margin: 30px 0 20px 0;
+            font-weight: 600;
+        }
+        
+        /* 主页内容 */
+        .hero-section {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .conference-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+        
+        .info-item i {
+            font-size: 1.3em;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 14px 35px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            background: #f8f9fa;
+        }
+        
+        /* 旅行信息页面 */
+        .content p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        
+        .content a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .content a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        
+        /* 移动端响应式 */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 20px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .page-container {
+                padding: 25px;
+            }
+            
+            .hero-title {
+                font-size: 2em;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+        }
+        
+        /* 占位符页面样式 */
+        .placeholder-message {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+        
+        .placeholder-icon {
+            font-size: 4em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .placeholder-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .placeholder-text {
+            color: #666;
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 页脚 */
+        .footer {
+            margin-top: 50px;
+            padding: 25px 0;
+            text-align: center;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #3498db;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边导航栏 -->
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="https://via.placeholder.com/120x120/3498db/ffffff?text=IAMC" alt="IAMC Logo" class="logo">
+            <div class="logo-text">IAMC 2024</div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#home" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i>Homepage</a></li>
+            <li class="nav-item"><a href="#committee" class="nav-link" onclick="showPage('committee')"><i class="fas fa-users"></i>Committee</a></li>
+            <li class="nav-item"><a href="#speakers" class="nav-link" onclick="showPage('speakers')"><i class="fas fa-microphone"></i>Invited Speakers</a></li>
+            <li class="nav-item"><a href="#deadlines" class="nav-link" onclick="showPage('deadlines')"><i class="fas fa-calendar-times"></i>Deadlines</a></li>
+            <li class="nav-item"><a href="#registration" class="nav-link" onclick="showPage('registration')"><i class="fas fa-edit"></i>Registration</a></li>
+            <li class="nav-item"><a href="#participants" class="nav-link" onclick="showPage('participants')"><i class="fas fa-user-friends"></i>Participants</a></li>
+            <li class="nav-item"><a href="#accommodation" class="nav-link" onclick="showPage('accommodation')"><i class="fas fa-hotel"></i>Accommodation</a></li>
+            <li class="nav-item"><a href="#program" class="nav-link" onclick="showPage('program')"><i class="fas fa-calendar-alt"></i>Program</a></li>
+            <li class="nav-item"><a href="#travelinfo" class="nav-link" onclick="showPage('travelinfo')"><i class="fas fa-plane"></i>Travel Information</a></li>
+            <li class="nav-item"><a href="#localinfo" class="nav-link" onclick="showPage('localinfo')"><i class="fas fa-map-marked-alt"></i>Local Information</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div id="page-container" class="page-container">
+            <!-- 主页内容 -->
+            <div id="home" class="page-content active">
+                <h1 class="page-title">12th Meeting of the International Academy of Mathematical Chemistry</h1>
+                <div class="hero-section">
+                    <h2 class="hero-title">Advancing Mathematical Chemistry</h2>
+                    <p class="hero-subtitle">Connecting Mathematics and Chemistry through Innovative Research</p>
+                    <div class="conference-info">
+                        <div class="info-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>July 15-19, 2024</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Tianjin, China</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-university"></i>
+                            <span>Nankai University</span>
+                        </div>
+                    </div>
+                    <a href="#registration" class="cta-button" onclick="showPage('registration')">Register Now</a>
+                </div>
+                
+                <div class="content-card">
+                    <h2 class="section-title">Welcome Message</h2>
+                    <p>Welcome to the 12th Meeting of the International Academy of Mathematical Chemistry (IAMC-12). This prestigious conference brings together leading researchers, scholars, and practitioners from around the world to discuss the latest advancements at the intersection of mathematics and chemistry.</p>
+                    <p>IAMC-12 will be held from July 15-19, 2024, in the beautiful city of Tianjin, China, hosted by Nankai University. This conference provides an exceptional platform for presenting cutting-edge research, fostering collaborations, and exploring new frontiers in mathematical chemistry.</p>
+                    
+                    <h3 class="sub-section-title">Conference Highlights</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 25px;">
+                        <li style="margin-bottom: 10px;">Keynote presentations by world-renowned experts</li>
+                        <li style="margin-bottom: 10px;">Special sessions on emerging topics in mathematical chemistry</li>
+                        <li style="margin-bottom: 10px;">Poster presentations showcasing innovative research</li>
+                        <li style="margin-bottom: 10px;">Networking opportunities with international scholars</li>
+                        <li style="margin-bottom: 10px;">Cultural events and city tours in Tianjin</li>
+                    </ul>
+                    
+                    <h3 class="sub-section-title">Important Dates</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee; width: 60%;">Abstract Submission Deadline</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee; color: #e74c3c; font-weight: 600;">March 31, 2024</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee;">Early Bird Registration</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee; color: #e74c3c; font-weight: 600;">April 30, 2024</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee;">Conference Dates</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #eee; color: #e74c3c; font-weight: 600;">July 15-19, 2024</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 委员会页面 -->
+            <div id="committee" class="page-content" style="display: none;">
+                <h1 class="page-title">Organizing Committee</h1>
+                <div class="content-card">
+                    <table class="committee-list">
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://people.math.wisc.edu/~bwang274/" target="_blank" class="committee-link">
+                                    <b>Botong Wang</b>
+                                </a>
+                            </td>
+                            <td class="info-col">
+                                University of Wisconsin-Madison, USA
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://math.tsinghua.edu.cn/info/1125/1604.htm" target="_blank" class="committee-link">
+                                    <b>Jian Xiao</b>
+                                </a>
+                            </td>
+                            <td class="info-col">
+                                Tsinghua University, Beijing, China
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://cfc.nankai.edu.cn/ylb_en/" target="_blank" class="committee-link">
+                                    <b>Arthur Yang</b>
+                                </a>
+                            </td>
+                            <td class="info-col">
+                                Nankai University, China
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 演讲者页面 -->
+            <div id="speakers" class="page-content" style="display: none;">
+                <h1 class="page-title">Invited Speakers</h1>
+                <div class="content-card">
+                    <h2 class="sub-section-title">Invited Plenary Speakers</h2>
+                    <table class="speaker-list">
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://math.washington.edu/people/tracy-chin" target="_blank" class="speaker-link">
+                                    Tracy Chin*, University of Washington, USA
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://www.unipi.it/en/about-us/organisation/people/luis-ferroni-210613-en/" target="_blank" class="speaker-link">
+                                    Luis Ferroni, Università di Pisa, Italy
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="#" class="speaker-name no-link">
+                                    Jiajun Hu, Tsinghua University, China
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://www.daojihuang.me/" target="_blank" class="speaker-link">
+                                    Daoji Huang, University of Massachusetts Amherst, USA
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://www.math.ias.edu/~junehuh/" target="_blank" class="speaker-link">
+                                    June Huh, Princeton University, USA
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://people.math.osu.edu/katz.60/" target="_blank" class="speaker-link">
+                                    Eric Katz, The Ohio State University, USA
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://www.kth.se/profile/lvecchi/?l=en" target="_blank" class="speaker-link">
+                                    Lorenzo Vecchi, KTH Royal Institute of Technology, Sweden
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://sites.lsa.umich.edu/jidongw/" target="_blank" class="speaker-link">
+                                    Jidong Wang, University of Michigan, USA
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="icon-cell"><i class="fas fa-circle icon"></i></td>
+                            <td class="name-cell">
+                                <a href="https://server.mcm.ac.cn/~zheng/" target="_blank" class="speaker-link">
+                                    Weizhe Zheng, Chinese Academy of Sciences, China
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 旅行信息页面 -->
+            <div id="travelinfo" class="page-content" style="display: none;">
+                <h1 class="page-title">Travel Information</h1>
+                <div class="content-card">
+                    <div class="content">
+                        <p><i class="fas fa-circle icon"></i> About Tianjin</p>
+                        <p>Tianjin, one of the four municipalities directly under the Central Government in China, is located in the northeast of the North China Plain and is the closest seaport to Beijing. The city is one of the biggest industrial and port cities in China and it is also known as "the diamond of the Bohai Gulf".</p>
+                        <p>Tianjin has a long and illustrious history, from an ordinary fishing village to the most important trade center in Northern China. Tianjin was considered to be one of China's most important military fortresses in the Yuan Dynasty (1271-1368) due to its particular geographic location as access point to Beijing, the national capital. Its name "Tianjin" was graciously bestowed by the Emperor Zhudi in the early years of the Ming Dynasty (1368 - 1644). Tianjin means "the place where the emperor crossed the river". In 1860, after the First Opium War, Tianjin was further expanded to become the second largest business and communications center in the country. By the end of the 19th century, it had grown into a bustling center for international commerce.</p>
+                        <p>Related Resource: <a href="http://www.travelchinaguide.com/cityguides/tianjin/" target="_blank">http://www.travelchinaguide.com/cityguides/tianjin/</a></p>
+                        <p><i class="fas fa-circle icon"></i> China Visa</p>
+                        <p>For details, please visit : <a href="https://www.travelchinaguide.com/embassy/visa/introduction.htm" target="_blank">https://www.travelchinaguide.com/embassy/visa/introduction.htm</a></p>
+                        <p><i class="fas fa-circle icon"></i> Tianjin Weather</p>
+                        <p>For details, please visit the homepage of Weather China: <a href="http://www.weather.com.cn/en/weather/101030100.shtml" target="_blank">http://www.weather.com.cn/en/weather/101030100.shtml</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他占位符页面 -->
+            <div id="deadlines" class="page-content" style="display: none;">
+                <h1 class="page-title">Important Deadlines</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-calendar-times placeholder-icon"></i>
+                    <h2 class="placeholder-title">Deadlines Information Coming Soon</h2>
+                    <p class="placeholder-text">The important dates and deadlines for IAMC-12 will be announced shortly. Please check back later for detailed information about submission deadlines, registration dates, and other important timelines.</p>
+                </div>
+            </div>
+
+            <div id="registration" class="page-content" style="display: none;">
+                <h1 class="page-title">Registration</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-edit placeholder-icon"></i>
+                    <h2 class="placeholder-title">Registration Portal Coming Soon</h2>
+                    <p class="placeholder-text">The registration system for IAMC-12 will be available soon. Please check back later to register for the conference and submit your abstracts.</p>
+                </div>
+            </div>
+
+            <div id="participants" class="page-content" style="display: none;">
+                <h1 class="page-title">Participants</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-user-friends placeholder-icon"></i>
+                    <h2 class="placeholder-title">Participant List Coming Soon</h2>
+                    <p class="placeholder-text">The list of registered participants will be available after the registration period begins. Check back later to see who will be attending IAMC-12.</p>
+                </div>
+            </div>
+
+            <div id="accommodation" class="page-content" style="display: none;">
+                <h1 class="page-title">Accommodation</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-hotel placeholder-icon"></i>
+                    <h2 class="placeholder-title">Accommodation Information Coming Soon</h2>
+                    <p class="placeholder-text">Detailed information about recommended hotels, rates, and booking procedures will be provided soon. We are negotiating special rates for conference attendees.</p>
+                </div>
+            </div>
+
+            <div id="program" class="page-content" style="display: none;">
+                <h1 class="page-title">Conference Program</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-calendar-alt placeholder-icon"></i>
+                    <h2 class="placeholder-title">Conference Program Coming Soon</h2>
+                    <p class="placeholder-text">The detailed conference program including session schedules, keynote presentations, and special events will be available after the abstract submission deadline.</p>
+                </div>
+            </div>
+
+            <div id="localinfo" class="page-content" style="display: none;">
+                <h1 class="page-title">Local Information</h1>
+                <div class="placeholder-message">
+                    <i class="fas fa-map-marked-alt placeholder-icon"></i>
+                    <h2 class="placeholder-title">Local Information Coming Soon</h2>
+                    <p class="placeholder-text">Information about local attractions, dining options, transportation, and cultural activities in Tianjin will be provided soon.</p>
+                </div>
+            </div>
+
+            <!-- 页脚 -->
+            <footer class="footer">
+                <p>&copy; 2024 International Academy of Mathematical Chemistry. All rights reserved.</p>
+                <p>12th Meeting of the International Academy of Mathematical Chemistry | Nankai University, Tianjin, China</p>
+                <div class="footer-links">
+                    <a href="http://www.iamc-online.org/" target="_blank">IAMC Official Website</a>
+                    <a href="#contact">Contact Us</a>
+                    <a href="#privacy">Privacy Policy</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // 页面切换函数
+        function showPage(pageId) {
+            // 隐藏所有页面
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // 显示选中的页面
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.style.display = 'block';
+                activePage.classList.add('active');
+                
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // 更新导航菜单的活跃状态
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${pageId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // 更新页面标题
+            const pageTitle = activePage.querySelector('.page-title');
+            if (pageTitle) {
+                document.title = pageTitle.textContent + ' | IAMC 2024';
+            }
+        }
+        
+        // 页面加载时显示主页
+        document.addEventListener('DOMContentLoaded', function() {
+            // 显示主页
+            showPage('home');
+            
+            // 处理URL中的哈希（直接访问某个页面）
+            if (window.location.hash) {
+                const pageId = window.location.hash.substring(1);
+                showPage(pageId);
+            }
+            
+            // 为所有页面链接添加事件监听器
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('href').substring(1);
+                    showPage(pageId);
+                    // 更新URL哈希
+                    window.location.hash = pageId;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
